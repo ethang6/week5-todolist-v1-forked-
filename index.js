@@ -1,98 +1,60 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-
-// create a date object that requires the date.js file
-const date = require(__dirname + "/date.js");
 
 const app = express();
-//test
-// set an array for the default items in the list
-let items = [
-  "Buy Food",
-  "Prepare Food",
-  "Cook Food",
-  "Eat Food",
-  "Clean Plates",
-];
-// set an empty array for work items
-let workItems = ["Show Up", "Get Settled", "Drink Coffee"];
-// set an array for fun items
-let funItems = ["Go Hiking", "Watch Movie", "Go Bowling"];
-// set an array for weekend items
-let weekendItems = ["Sleep In", "Go Grocery Shopping", "Relax with Friends"];
 
-// set EJS as the viewing engine to display html
+// Set up EJS as the view engine
 app.set("view engine", "ejs");
 
-// use body parser to parse html file
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// use Express to serve or display static files such as images, CSS, JS files etc.
+// Serve static files (CSS, JS, images)
 app.use(express.static("public"));
 
-// default html file in web server
-app.get("/", function (req, res) {
-  // get the system date from the getDate function exported by the date.js file
-  let day = date.getDate();
-
-  // use EJS render to display the day and the To Do List
-  res.render("list", { listTitle: day, newListItems: items });
+app.get("/", (req, res) => {
+  res.render("index");
 });
 
-// display default to do list on the default root folder
-app.post("/", function (req, res) {
-  // code allows items to be added to the regular list and work list
-  let item = req.body.newItem;
+// Sample Data for Personal List
+const personalInfo = {
+  firstName: "Ethan",
+  lastName: "Hunt",
+  state: "Hawaii",
+  country: "USA",
+};
 
-  // if route is /work, add to work list
-  if (req.body.list === "Work") {
-    workItems.push(item);
-    res.redirect("/work");
-  }
-  // if route is /fun, add to fun list
-  else if (req.body.list === "Fun") {
-    funItems.push(item);
-    res.redirect("/fun");
-  }
-  // if route is /weekend, add to weekend list
-  else if (req.body.list === "Weekend") {
-    weekendItems.push(item);
-    res.redirect("/weekend");
-  }
-  // otherwise, add to the default items list
-  else {
-    items.push(item);
-    res.redirect("/");
-  }
-});
+// Sample Data for Zodiac List
+const zodiacInfo = {
+  firstName: "Ethan",
+  lastName: "Hunt",
+  zodiac: "Aquarius",
+  birthstone: "Amethyst",
+};
 
-// display work to-do list
-app.get("/work", function (req, res) {
-  let day = date.getDate();
+// Route for Personal List (/Personal)
+app.get("/Personal", (req, res) => {
   res.render("list", {
-    listTitle: "Work Items To-Do List",
-    newListItems: workItems,
+    title: "Personal Information",
+    items: [
+      `First Name: ${personalInfo.firstName}`,
+      `Last Name: ${personalInfo.lastName}`,
+      `State: ${personalInfo.state}`,
+      `Country: ${personalInfo.country}`,
+    ],
   });
 });
 
-// display fun to-do list
-app.get("/fun", function (req, res) {
-  let day = date.getDate();
+// Route for Zodiac List (/Zodiac)
+app.get("/Zodiac", (req, res) => {
   res.render("list", {
-    listTitle: "Fun Items To-Do List",
-    newListItems: funItems,
+    title: "Zodiac Information",
+    items: [
+      `First Name: ${zodiacInfo.firstName}`,
+      `Last Name: ${zodiacInfo.lastName}`,
+      `Zodiac: ${zodiacInfo.zodiac}`,
+      `Birthstone: ${zodiacInfo.birthstone}`,
+    ],
   });
 });
 
-// display weekend to-do list
-app.get("/weekend", function (req, res) {
-  let day = date.getDate();
-  res.render("list", {
-    listTitle: "Weekend Items To-Do List",
-    newListItems: weekendItems,
-  });
-});
-
-app.listen(3000, function () {
-  console.log("Server is running on port 3000");
+// Start the Server
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
 });

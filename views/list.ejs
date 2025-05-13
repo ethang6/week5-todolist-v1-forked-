@@ -1,23 +1,23 @@
-<%- include("header") -%>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <%- include("partials/header") %>
 
-    <div class="box" id="heading">
-         <h2> <%= listTitle %> </h2>
+    <div class="container">
+      <h2><%= title %></h2>
+      <ul>
+        <% items.forEach(function(item) { %>
+        <li><%= item %></li>
+        <% }); %>
+      </ul>
     </div>
 
-   <div class="box">
-        <% for (let i=0; i<newListItems.length; i++) { %>
-       <div class="item">
-        <input type="checkbox">
-           <p><%= newListItems[i] %></p>
-       </div>
-       <% } %>
-    
-       
-     <form class="item" action="/" method="post">
-       <input type="text" name="newItem" placeholder="New Item placeholder" autocomplete="off">
-         <button type="submit" name="list" value=<%= listTitle %>>+</button>
-       </form>   
-    </div>
-
-         <%- include("footer") -%>
- 
+    <%- include("partials/footer") %>
+  </body>
+</html>
